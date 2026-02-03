@@ -1,0 +1,37 @@
+### Get all workouts
+GET http://localhost:3000/workouts
+
+### Get a workout by ID (I will replace this with a real ID from our DB later)
+GET http://localhost:3000/workouts/6981e95c73af57404816926e
+
+### Create a new workout
+POST http://localhost:3000/workouts
+Content-Type: application/json
+
+{
+  "userId": "Douglas123",
+  "type": "strength",
+  "durationMin": 90,
+  "exercises": [
+    {
+      "name": "Bench Press",
+      "sets": 3,
+      "reps": 10,
+      "weight": 135
+    }
+  ],
+  "notes": "Feeling strong today like never before!"
+}
+
+
+### Update a workout (Replace ID with a real one from your GET)
+PUT http://localhost:3000/workouts/6981e95c73af57404816926d
+Content-Type: application/json
+
+{
+  "durationMin": 150,
+  "notes": "Updated: Feeling strong today like never before!"
+}
+
+### Delete a workout
+DELETE http://localhost:3000/workouts/6981e927ac34538eca5f828a
