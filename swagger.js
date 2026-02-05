@@ -5,8 +5,8 @@ const doc = {
     title: 'Wellness Tracker API',
     description: 'Douglas\'s Fitness and Workout API Documentation',
   },
-  host: 'localhost:3000',
-  schemes: ['http'],
+  host: 'wellnes-tracker-api.onrender.com',
+  schemes: ['https'],
 };
 
 const outputFile = './swagger-output.json';
