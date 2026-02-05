@@ -4,7 +4,7 @@
   "description": "Wellness Tracker API",
   "main": "server.js",
   "scripts": {
-    "test": "jest",
+    "test": "cross-env NODE_ENV=test jest",
     "start": "node server.js"
   },
   "repository": {
