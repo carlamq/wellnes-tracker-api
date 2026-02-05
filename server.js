@@ -22,6 +22,11 @@ if (process.env.NODE_ENV !== "test") {
     .catch((err) => console.error("Could not connect to MongoDB:", err));
 }
 
+// Home Route
+app.get("/", (req, res) => {
+  res.send("Wellness Tracker API is running successfully!");
+});
+
 // Routes
 app.use("/", require("./src/routes/index"));
 

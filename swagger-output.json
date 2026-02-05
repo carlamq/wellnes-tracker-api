@@ -5,12 +5,22 @@
     "description": "Douglas's Fitness and Workout API Documentation",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "wellnes-tracker-api.onrender.com",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/workouts/": {
       "get": {
         "description": "",
