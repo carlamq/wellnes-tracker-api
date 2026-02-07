@@ -3,7 +3,7 @@ const Habit = require("../models/habit");
 const isCastError = (err) => err && err.name === "CastError";
 const isValidationError = (err) => err && err.name === "ValidationError";
 
-// GET /habits
+// Get All habits
 const getAllHabits = async (req, res) => {
     try {
         //#swagger.tags=['Habits']
@@ -14,20 +14,20 @@ const getAllHabits = async (req, res) => {
     }
 };
 
-// GET /habits/:id
+// GET habit by id
 const getHabitById = async (req, res) => {
     try {  
         //#swagger.tags=['Habits']
         const habit = await Habit.findById(req.params.id);   
         if (!habit) return res.status(404).json({ message: "Habit not found" });  
-        es.status(200).json(habit); 
+        res.status(200).json(habit); 
     } catch (error) {   
         if (isCastError(error)) return res.status(400).json({ message: "Invalid id" });   
         res.status(500).json({ message: error.message }); 
     }
 };
 
-// POST /habits
+// POST Create
 const createHabit = async (req, res) => {
     try {
         // if need create the USER collection for OAuth, you can use the next line:
@@ -49,7 +49,7 @@ const createHabit = async (req, res) => {
     }
 };
 
-// PUT /habits/:id
+// PUT Update
 const updateHabit = async (req, res) => {
     try {
         //#swagger.tags=['Habits']
@@ -66,7 +66,7 @@ const updateHabit = async (req, res) => {
     }
 };
 
-// DELETE /habits/:id
+// DELETE
 const deleteHabit = async (req, res) => {
     try {
         //#swagger.tags=['Habits']
