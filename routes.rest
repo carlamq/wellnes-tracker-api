@@ -40,7 +40,7 @@ DELETE http://localhost:3000/workouts/6981e927ac34538eca5f828a
 GET http://localhost:3000/habits
 
 ### GET habit by id (PUBLIC)
-GET http://localhost:3000/habits/65b8f2e6a1c9a3e8d1234567
+GET http://localhost:3000/habits/698709c671eabdc5ec4efdd6
 
 ### Create habit 
 POST http://localhost:3000/habits
@@ -55,7 +55,7 @@ POST http://localhost:3000/habits
 }
 
 ### Update habit
-PUT http://localhost:3000/habits/65b8f2e6a1c9a3e8d1234567
+PUT http://localhost:3000/habits/698709c671eabdc5ec4efdd6
 
 {
   "name": "Drink more water",
@@ -66,6 +66,7 @@ PUT http://localhost:3000/habits/65b8f2e6a1c9a3e8d1234567
 }
 
 ### Delete habit
-DELETE http://localhost:3000/habits/65b8f2e6a1c9a3e8d1234567
+DELETE http://localhost:3000/habits/698709c671eabdc5ec4efdd6
 
 
+'
