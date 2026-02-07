@@ -14,6 +14,19 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(bodyParser.json());
 
+//CORS added
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Z-Key, Authorization"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+
+  if (req.method === "OPTIONS") return res.sendStatus(204);
+  next();
+});
+
 // Database Connection - I UPDATED HERE FOR TESTING
 if (process.env.NODE_ENV !== "test") {
   mongoose

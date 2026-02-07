@@ -35,3 +35,37 @@ Content-Type: application/json
 
 ### Delete a workout
 DELETE http://localhost:3000/workouts/6981e927ac34538eca5f828a
+
+### GET all habits (PUBLIC)
+GET http://localhost:3000/habits
+
+### GET habit by id (PUBLIC)
+GET http://localhost:3000/habits/65b8f2e6a1c9a3e8d1234567
+
+### Create habit 
+POST http://localhost:3000/habits
+
+{
+  "userId": "test-user-123",
+  "name": "Drink water",
+  "frequency": "daily",
+  "targetCount": 8,
+  "category": "health",
+  "active": true
+}
+
+### Update habit
+PUT http://localhost:3000/habits/65b8f2e6a1c9a3e8d1234567
+
+{
+  "name": "Drink more water",
+  "frequency": "daily",
+  "targetCount": 10,
+  "category": "health",
+  "active": true
+}
+
+### Delete habit
+DELETE http://localhost:3000/habits/65b8f2e6a1c9a3e8d1234567
+
+
