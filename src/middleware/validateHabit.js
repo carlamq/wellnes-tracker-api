@@ -1,7 +1,7 @@
 const validateHabitBody = (req, res, next) => {
     const { userName, name, frequency, targetCount } = req.body;
     const errors = [];
-    if (!userName || typeof userId !== "string") errors.push("userId is required and must be a string");
+    if (!userName || typeof userName !== "string") errors.push("userId is required and must be a string");
     if(!name || typeof name !== "string" || name.trim().length < 2) errors.push("name is required (min 2 chars)");
     if (frequency && !["daily", "weekly"].includes(frequency)) errors.push("frequency must be daily or weekly"); 
     if (targetCount !== undefined && (typeof targetCount !== "number" || targetCount < 1)) errors.push("targetCount must be a number >= 1"); 

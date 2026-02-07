@@ -46,7 +46,7 @@ GET http://localhost:3000/habits/65b8f2e6a1c9a3e8d1234567
 POST http://localhost:3000/habits
 
 {
-  "userId": "test-user-123",
+  "userName": "test-user-123",
   "name": "Drink water",
   "frequency": "daily",
   "targetCount": 8,
