@@ -1,4 +1,3 @@
-Carla Branch: carla
 
 INFORMATION FOR THE TEAM:
 
