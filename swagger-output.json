@@ -187,7 +187,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "userId": {
+                "userName": {
                   "example": "any"
                 },
                 "name": {
@@ -269,7 +269,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "userId": {
+                "userName": {
                   "example": "any"
                 },
                 "name": {

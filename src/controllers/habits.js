@@ -34,7 +34,7 @@ const createHabit = async (req, res) => {
         // userId: req.user.sub 
         //#swagger.tags=['Habits']
         const habit = new Habit({      
-            userId: req.body.userId,    
+            userName: req.body.userName,    
             name: req.body.name,
             frequency: req.body.frequency,
             targetCount: req.body.targetCount,    
