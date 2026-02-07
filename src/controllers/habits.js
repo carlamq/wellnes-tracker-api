@@ -6,6 +6,7 @@ const isValidationError = (err) => err && err.name === "ValidationError";
 // GET /habits
 const getAllHabits = async (req, res) => {
     try {
+        //#swagger.tags=['Habits']
         const habits = await Habit.find();   
         res.status(200).json(habits); 
     } catch (error) {   
@@ -16,6 +17,7 @@ const getAllHabits = async (req, res) => {
 // GET /habits/:id
 const getHabitById = async (req, res) => {
     try {  
+        //#swagger.tags=['Habits']
         const habit = await Habit.findById(req.params.id);   
         if (!habit) return res.status(404).json({ message: "Habit not found" });  
         es.status(200).json(habit); 
@@ -28,8 +30,9 @@ const getHabitById = async (req, res) => {
 // POST /habits
 const createHabit = async (req, res) => {
     try {
-        // if need create the USER collection for OAuth, you can use the next line:   
+        // if need create the USER collection for OAuth, you can use the next line:
         // userId: req.user.sub 
+        //#swagger.tags=['Habits']
         const habit = new Habit({      
             userId: req.body.userId,    
             name: req.body.name,
@@ -49,6 +52,7 @@ const createHabit = async (req, res) => {
 // PUT /habits/:id
 const updateHabit = async (req, res) => {
     try {
+        //#swagger.tags=['Habits']
         const updatedHabit = await Habit.findByIdAndUpdate(req.params.id, req.body, { 
             new: true,  
             runValidators: true 
@@ -65,6 +69,7 @@ const updateHabit = async (req, res) => {
 // DELETE /habits/:id
 const deleteHabit = async (req, res) => {
     try {
+        //#swagger.tags=['Habits']
         const deletedHabit = await Habit.findByIdAndDelete(req.params.id);
         if (!deletedHabit) return res.status(404).json({ message: "Habit not found" });
         res.status(200).json({ message: "Habit deleted successfully" });
