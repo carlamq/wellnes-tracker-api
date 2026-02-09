@@ -5,7 +5,7 @@ const doc = {
     title: 'Wellness Tracker API',
     description: "Douglas, Carla, and David's Fitness and Workout API Documentation",
   },
-  host: 'wellness-tracker-api.onrender.com',
+  host: 'wellnes-tracker-api.onrender.com',
   schemes: ['https', 'http'], // Added http for local testing flexibility
   definitions: {
     Habit: {
