@@ -1,5 +1,8 @@
 const Workout = require('../models/workout');
 
+const isCastError = (err) => err && err.name === "CastError";
+const isValidationError = (err) => err && err.name === "ValidationError";
+
 // GET all workouts
 const getAllWorkouts = async (req, res) => {
   try {
@@ -19,26 +22,28 @@ const getWorkoutById = async (req, res) => {
     }
     res.status(200).json(workout);
   } catch (error) {
+    if (isCastError(error)) return res.status(400).json({ message: "Invalid workout ID" });
     res.status(500).json({ message: error.message });
   }
 };
 
 // POST a new workout
 const createWorkout = async (req, res) => {
-  const workout = new Workout({
-    userId: req.body.userId,
-    date: req.body.date,
-    type: req.body.type,
-    durationMin: req.body.durationMin,
-    exercises: req.body.exercises,
-    notes: req.body.notes
-  });
-
   try {
+    const workout = new Workout({
+      userId: req.body.userId,
+      date: req.body.date,
+      type: req.body.type,
+      durationMin: req.body.durationMin,
+      exercises: req.body.exercises,
+      notes: req.body.notes
+    });
+
     const newWorkout = await workout.save();
     res.status(201).json(newWorkout);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    if (isValidationError(error)) return res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -53,9 +58,11 @@ const updateWorkout = async (req, res) => {
     if (!updatedWorkout) {
       return res.status(404).json({ message: 'Workout not found' });
     }
-    res.status(204).send(); // 204 means "No Content" - successful update
+    res.status(200).json(updatedWorkout);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    if (isCastError(error)) return res.status(400).json({ message: "Invalid workout ID" });
+    if (isValidationError(error)) return res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -68,9 +75,11 @@ const deleteWorkout = async (req, res) => {
     }
     res.status(200).json({ message: 'Workout deleted successfully' });
   } catch (error) {
+    if (isCastError(error)) return res.status(400).json({ message: "Invalid workout ID" });
     res.status(500).json({ message: error.message });
   }
 };
+
 module.exports = {
   getAllWorkouts,
   getWorkoutById,
