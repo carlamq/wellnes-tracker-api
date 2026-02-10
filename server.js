@@ -83,6 +83,17 @@ app.get('/github/callback',
   }
 );
 
+// 6.1 route to confirm who is logged in
+app.get("/me", (req, res) => {
+  if (!req.session.user) return res.status(401).json({ message: "Not logged in" });
+
+  res.status(200).json({
+    id: req.session.user.id,
+    username: req.session.user.username,
+    displayName: req.session.user.displayName,
+  });
+});
+
 // 7. Core Routes
 app.get("/", (req, res) => {
   res.send("Wellness Tracker API is running successfully!");
