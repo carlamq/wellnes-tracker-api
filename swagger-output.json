@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Wellness Tracker API",
-    "description": "Douglas, Carla, and David's Fitness and Workout API Documentation",
+    "description": "Douglas and Carla's Fitness and Workout API Documentation",
     "version": "1.0.0"
   },
   "host": "wellnes-tracker-api.onrender.com",
@@ -73,6 +73,9 @@
     },
     "/workouts/": {
       "get": {
+        "tags": [
+          "Workouts"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -87,6 +90,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Workouts"
+        ],
         "description": "",
         "parameters": [
           {
@@ -132,6 +138,9 @@
     },
     "/workouts/{id}": {
       "get": {
+        "tags": [
+          "Workouts"
+        ],
         "description": "",
         "parameters": [
           {
@@ -157,6 +166,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Workouts"
+        ],
         "description": "",
         "parameters": [
           {
@@ -179,6 +191,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Workouts"
+        ],
         "description": "",
         "parameters": [
           {
@@ -390,6 +405,9 @@
     },
     "/nutrition/": {
       "get": {
+        "tags": [
+          "Nutrition"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -404,6 +422,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Nutrition"
+        ],
         "description": "",
         "parameters": [
           {
@@ -446,6 +467,9 @@
     },
     "/nutrition/{id}": {
       "get": {
+        "tags": [
+          "Nutrition"
+        ],
         "description": "",
         "parameters": [
           {
@@ -471,6 +495,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Nutrition"
+        ],
         "description": "",
         "parameters": [
           {
@@ -496,6 +523,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Nutrition"
+        ],
         "description": "",
         "parameters": [
           {
@@ -526,6 +556,9 @@
     },
     "/sleep/": {
       "get": {
+        "tags": [
+          "Sleep"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -540,6 +573,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Sleep"
+        ],
         "description": "",
         "responses": {
           "201": {
@@ -559,6 +595,9 @@
     },
     "/sleep/{id}": {
       "get": {
+        "tags": [
+          "Sleep"
+        ],
         "description": "",
         "parameters": [
           {
@@ -584,6 +623,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Sleep"
+        ],
         "description": "",
         "parameters": [
           {
@@ -606,6 +648,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Sleep"
+        ],
         "description": "",
         "parameters": [
           {
