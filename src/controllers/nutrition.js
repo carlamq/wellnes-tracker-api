@@ -4,6 +4,7 @@ const { ObjectId } = require('mongodb');
 // Get all nutrition records
 const getAll = async (req, res) => {
   try {
+    //#swagger.tags=['Nutrition']
     const results = await Nutrition.find();
     res.status(200).json(results);
   } catch (err) {
@@ -14,6 +15,7 @@ const getAll = async (req, res) => {
 // Get a single nutrition record by ID
 const getSingle = async (req, res) => {
   try {
+    //#swagger.tags=['Nutrition']
     const id = new ObjectId(req.params.id);
     const result = await Nutrition.findById(id);
     if (!result) {
@@ -28,6 +30,7 @@ const getSingle = async (req, res) => {
 // Create a new nutrition record
 const createRecord = async (req, res) => {
   try {
+    //#swagger.tags=['Nutrition']
     const { userId, foodItem, calories } = req.body;
     // Data Validation: Return 400 if required fields are missing
     if (!userId || !foodItem || !calories) {
@@ -44,6 +47,7 @@ const createRecord = async (req, res) => {
 // Update an existing record
 const updateRecord = async (req, res) => {
   try {
+    //#swagger.tags=['Nutrition']
     const id = new ObjectId(req.params.id);
     const response = await Nutrition.findByIdAndUpdate(id, req.body, { new: true });
     if (!response) {
@@ -58,6 +62,7 @@ const updateRecord = async (req, res) => {
 // Delete a record
 const deleteRecord = async (req, res) => {
   try {
+    //#swagger.tags=['Nutrition']
     const id = new ObjectId(req.params.id);
     const response = await Nutrition.findByIdAndDelete(id);
     if (!response) {
