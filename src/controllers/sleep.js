@@ -3,6 +3,7 @@ const { ObjectId } = require('mongodb');
 
 const getAll = async (req, res) => {
   try {
+    //#swagger.tags=['Sleep']
     const results = await Sleep.find();
     res.status(200).json(results);
   } catch (err) {
@@ -12,6 +13,7 @@ const getAll = async (req, res) => {
 
 const getSingle = async (req, res) => {
   try {
+    //#swagger.tags=['Sleep']
     const id = new ObjectId(req.params.id);
     const result = await Sleep.findById(id);
     if (!result) return res.status(404).json({ message: 'Not found' });
@@ -23,6 +25,7 @@ const getSingle = async (req, res) => {
 
 const createRecord = async (req, res) => {
   try {
+    //#swagger.tags=['Sleep']
     const sleep = new Sleep(req.body);
     const response = await sleep.save();
     res.status(201).json(response);
@@ -33,6 +36,7 @@ const createRecord = async (req, res) => {
 
 const updateRecord = async (req, res) => {
   try {
+    //#swagger.tags=['Sleep']
     const id = new ObjectId(req.params.id);
     await Sleep.findByIdAndUpdate(id, req.body);
     res.status(204).send();
@@ -43,6 +47,7 @@ const updateRecord = async (req, res) => {
 
 const deleteRecord = async (req, res) => {
   try {
+    //#swagger.tags=['Sleep']
     const id = new ObjectId(req.params.id);
     await Sleep.findByIdAndDelete(id);
     res.status(200).json({ message: 'Deleted' });
