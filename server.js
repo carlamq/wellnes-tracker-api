@@ -4,6 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
+const passport = require("passport"); // NEW: Added for GitHub OAuth
 
 // Load environment variables
 dotenv.config();
@@ -13,6 +14,9 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
+
+// NEW: Initialize Passport for GitHub OAuth
+app.use(passport.initialize());
 
 //CORS added
 app.use((req, res, next) => {
