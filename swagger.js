@@ -3,7 +3,7 @@ const swaggerAutogen = require('swagger-autogen')();
 const doc = {
   info: {
     title: 'Wellness Tracker API',
-    description: "Douglas, Carla, and David's Fitness and Workout API Documentation",
+    description: "Douglas and Carla's Fitness and Workout API Documentation",
   },
   host: 'wellnes-tracker-api.onrender.com',
   schemes: ['https', 'http'], // Added http for local testing flexibility
