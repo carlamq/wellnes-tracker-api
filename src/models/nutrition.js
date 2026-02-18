@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+<<<<<<< David's-contribution
 const nutritionSchema = new mongoose.Schema(
   {
     userId: {
@@ -78,6 +79,16 @@ nutritionSchema.pre('save', function(next) {
     this.totalCalories = this.foods.reduce((sum, food) => sum + (food.calories || 0), 0);
   }
   next();
+=======
+const nutritionSchema = new mongoose.Schema({
+    userId: { type: String, required: true },
+    foodItem: { type: String, required: true },
+    calories: { type: Number, required: true },
+    proteinGrams: { type: Number },
+    carbsGrams: { type: Number },
+    fatsGrams: { type: Number },
+    date: { type: Date, default: Date.now }
+>>>>>>> main
 });
 
 module.exports = mongoose.model('Nutrition', nutritionSchema);

@@ -22,6 +22,7 @@ beforeEach(async () => {
   await Sleep.deleteMany({});
 });
 
+<<<<<<< David's-contribution
 describe("Sleep API", () => {
   describe("GET /sleep", () => {
     it("should return all sleep entries", async () => {
@@ -235,5 +236,27 @@ describe("Sleep API", () => {
 
       expect(res.statusCode).toEqual(400);
     });
+=======
+describe("Sleep API Unit Tests", () => {
+  test("GET /sleep should return all sleep records", async () => {
+    const sleepEntry = new Sleep({
+      userId: "user123",
+      hoursSlept: 8,
+      sleepQuality: "Excellent",
+      notes: "Feeling rested"
+    });
+    await sleepEntry.save();
+
+    const res = await request(app).get("/sleep");
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveLength(1);
+    expect(res.body[0]).toHaveProperty("hoursSlept", 8);
+  });
+
+  test("POST /sleep should return 400 for missing fields", async () => {
+    const invalidEntry = { userId: "user123" }; // Missing hoursSlept and date
+    const res = await request(app).post("/sleep").send(invalidEntry);
+    expect(res.statusCode).toEqual(400);
+>>>>>>> main
   });
 });

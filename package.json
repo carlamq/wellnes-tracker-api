@@ -23,7 +23,11 @@
     "body-parser": "^2.2.2",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+<<<<<<< David's-contribution
     "jsonwebtoken": "^9.0.3",
+=======
+    "express-session": "^1.19.0",
+>>>>>>> main
     "mongodb": "^7.0.0",
     "mongoose": "^9.1.5",
     "passport": "^0.7.0",
@@ -32,6 +36,7 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "cross-env": "^10.1.0",
     "jest": "^30.2.0",
     "mongodb-memory-server": "^11.0.1",
     "nodemon": "^3.1.11",

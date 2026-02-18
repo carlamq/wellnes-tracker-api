@@ -10,7 +10,7 @@ beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const mongoUri = mongoServer.getUri();
   await mongoose.connect(mongoUri);
-}, 30000);  
+}, 30000);
 
 afterAll(async () => {
   await mongoose.connection.dropDatabase();
@@ -47,7 +47,7 @@ describe("Workouts API", () => {
         userId: "user123",
         type: "cardio",
         durationMin: 30,
-        exercises: [{ name: "Running", sets: 1, reps: null }],
+        exercises: [{ name: "Running", sets: 1, reps: 0 }],
       });
       await workout.save();
 
@@ -71,7 +71,7 @@ describe("Workouts API", () => {
         userId: "user123",
         type: "yoga",
         durationMin: 45,
-        exercises: [{ name: "Downward Dog", sets: 1, reps: null }],
+        exercises: [{ name: "Downward Dog", sets: 1, reps: 10 }],
         notes: "Relaxing session",
       };
 
@@ -85,7 +85,7 @@ describe("Workouts API", () => {
     it("should return 400 for invalid data", async () => {
       const invalidWorkout = {
         userId: "user123",
-        // missing required fields
+        // missing required fields: type, durationMin, exercises
       };
 
       const res = await request(app).post("/workouts").send(invalidWorkout);
@@ -105,8 +105,10 @@ describe("Workouts API", () => {
       await workout.save();
 
       const updatedData = {
+        userId: "user123",
         type: "cardio",
         durationMin: 45,
+        exercises: [{ name: "Running", sets: 1, reps: 5 }]
       };
 
       const res = await request(app)
@@ -123,7 +125,12 @@ describe("Workouts API", () => {
     it("should return 404 if workout not found", async () => {
       const res = await request(app)
         .put("/workouts/60d5ecb74b24c72b8c8b4567")
-        .send({ type: "yoga" });
+        .send({ 
+          userId: "user123",
+          type: "yoga",
+          durationMin: 30,
+          exercises: [{ name: "Stretch", sets: 1, reps: 1 }]
+        });
 
       expect(res.statusCode).toEqual(404);
     });
@@ -135,7 +142,7 @@ describe("Workouts API", () => {
         userId: "user123",
         type: "other",
         durationMin: 20,
-        exercises: [{ name: "Stretching", sets: 1, reps: null }],
+        exercises: [{ name: "Stretching", sets: 1, reps: 1 }],
       });
       await workout.save();
 

@@ -3,98 +3,56 @@ const swaggerAutogen = require('swagger-autogen')();
 const doc = {
   info: {
     title: 'Wellness Tracker API',
-    description: 'Douglas,Carla,David\'s Fitness and Workout API Documentation - 4 Collections with GitHub OAuth Authentication',
-    version: '1.0.0'
+    description: "Douglas and Carla's Fitness and Workout API Documentation",
   },
   host: 'wellnes-tracker-api.onrender.com',
-  schemes: ['https'],
-  securityDefinitions: {
-    bearerAuth: {
-      type: 'apiKey',
-      name: 'Authorization',
-      in: 'header',
-      description: 'Enter your bearer token in the format: Bearer {token}'
-    }
-  },
+  schemes: ['https', 'http'], // Added http for local testing flexibility
   definitions: {
-    Workout: {
-      userId: 'user123',
-      date: '2024-02-11T10:00:00Z',
-      type: 'strength',
-      durationMin: 60,
-      exercises: [
-        { name: 'Push-ups', sets: 3, reps: 10, weight: 0 }
-      ],
-      notes: 'Great workout session'
-    },
     Habit: {
-      userName: 'testuser',
-      name: 'Morning Exercise',
-      frequency: 'daily',
-      targetCount: 7,
-      category: 'fitness',
-      active: true
+      type: 'object',
+      properties: {
+        name: { type: 'string', example: 'Drink Water' },
+        userName: { type: 'string', example: 'testuser123' },
+        userId: { type: 'string', example: 'user123' },
+        frequency: { type: 'string', example: 'daily' },
+        goal: { type: 'number', example: 8 },
+        unit: { type: 'string', example: 'glasses' }
+      }
     },
     Nutrition: {
-      userId: 'user123',
-      date: '2024-02-11T08:00:00Z',
-      mealType: 'breakfast',
-      foods: [
-        { 
-          name: 'Oatmeal with Berries', 
-          calories: 250, 
-          protein: 8, 
-          carbs: 45, 
-          fats: 5, 
-          servingSize: '1 bowl' 
-        }
-      ],
-      totalCalories: 250,
-      waterIntakeMl: 500,
-      notes: 'Healthy breakfast to start the day'
+      type: 'object',
+      properties: {
+        userId: { type: 'string', example: 'user123' },
+        foodItem: { type: 'string', example: 'Grilled Chicken Salad' },
+        calories: { type: 'number', example: 450 },
+        protein: { type: 'number', example: 35 },
+        carbs: { type: 'number', example: 12 },
+        fat: { type: 'number', example: 15 }
+      }
     },
     Sleep: {
-      userId: 'user123',
-      date: '2024-02-11T00:00:00Z',
-      bedtime: '2024-02-10T22:00:00Z',
-      wakeTime: '2024-02-11T06:00:00Z',
-      durationHours: 8,
-      quality: 'good',
-      interruptions: 1,
-      sleepStages: {
-        lightSleepMin: 240,
-        deepSleepMin: 120,
-        remSleepMin: 120
-      },
-      notes: 'Solid night of sleep',
-      feltRested: true
+      type: 'object',
+      properties: {
+        userId: { type: 'string', example: 'user123' },
+        hoursSlept: { type: 'number', example: 7.5 },
+        sleepQuality: { type: 'string', example: 'Good' },
+        date: { type: 'string', example: '2026-02-09' }
+      }
+    },
+    Workout: {
+      type: 'object',
+      properties: {
+        userId: { type: 'string', example: 'user123' },
+        exerciseType: { type: 'string', example: 'Running' },
+        duration: { type: 'number', example: 45 },
+        intensity: { type: 'string', example: 'Moderate' },
+        caloriesBurned: { type: 'number', example: 400 }
+      }
     }
-  },
-  tags: [
-    {
-      name: 'Authentication',
-      description: 'GitHub OAuth endpoints'
-    },
-    {
-      name: 'Workouts',
-      description: 'Workout tracking endpoints'
-    },
-    {
-      name: 'Habits',
-      description: 'Habit tracking endpoints'
-    },
-    {
-      name: 'Nutrition',
-      description: 'Nutrition tracking endpoints (Protected routes require authentication)'
-    },
-    {
-      name: 'Sleep',
-      description: 'Sleep tracking endpoints (Protected routes require authentication)'
-    }
-  ]
+  }
 };
 
 const outputFile = './swagger-output.json';
-const endpointsFiles = ['./server.js'];
+const endpointsFiles = ['./server.js']; 
 
 swaggerAutogen(outputFile, endpointsFiles, doc);
