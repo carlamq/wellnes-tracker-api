@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+<<<<<<< David's-contribution
 const sleepSchema = new mongoose.Schema(
   {
     userId: {
@@ -75,6 +76,14 @@ sleepSchema.pre('save', function(next) {
     this.durationHours = Math.max(0, Math.min(24, duration)); // Clamp between 0-24
   }
   next();
+=======
+const sleepSchema = new mongoose.Schema({
+  userId: { type: String, required: true },
+  date: { type: Date, default: Date.now, required: true },
+  hoursSlept: { type: Number, required: true },
+  sleepQuality: { type: String, enum: ['Poor', 'Fair', 'Good', 'Excellent'], default: 'Good' },
+  notes: { type: String }
+>>>>>>> main
 });
 
 module.exports = mongoose.model('Sleep', sleepSchema);

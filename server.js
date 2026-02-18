@@ -1,10 +1,16 @@
-const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("./swagger-output.json");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
+<<<<<<< David's-contribution
 const passport = require("passport"); // NEW: Added for GitHub OAuth
+=======
+const passport = require('passport');
+const session = require('express-session');
+const GitHubStrategy = require('passport-github2').Strategy;
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger-output.json");
+>>>>>>> main
 
 // Load environment variables
 dotenv.config();
@@ -12,13 +18,43 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware
+// 1. Session Middleware (Must be defined before Passport and Routes)
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'wellness_tracker_secret',
+    resave: false,
+    saveUninitialized: true
+}));
+
+// 2. Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// 3. GitHub Strategy Configuration
+passport.use(new GitHubStrategy({
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: process.env.CALLBACK_URL
+  },
+  function(accessToken, refreshToken, profile, done) {
+    // In a real app, you might save the user to your DB here
+    return done(null, profile);
+  }
+));
+
+passport.serializeUser((user, done) => { done(null, user); });
+passport.deserializeUser((user, done) => { done(null, user); });
+
+// 4. Standard Middleware
 app.use(bodyParser.json());
 
+<<<<<<< David's-contribution
 // NEW: Initialize Passport for GitHub OAuth
 app.use(passport.initialize());
 
 //CORS added
+=======
+// CORS configuration
+>>>>>>> main
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -31,7 +67,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Database Connection - I UPDATED HERE FOR TESTING
+// 5. Database Connection (Skips connection if running Unit Tests)
 if (process.env.NODE_ENV !== "test") {
   mongoose
     .connect(process.env.MONGODB_URI)
@@ -39,21 +75,50 @@ if (process.env.NODE_ENV !== "test") {
     .catch((err) => console.error("Could not connect to MongoDB:", err));
 }
 
-// Home Route
+// 6. Auth Routes
+app.get('/login', passport.authenticate('github', { scope: [ 'user:email' ] }));
+
+app.get('/logout', function(req, res, next) {
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        req.session.destroy(); // Clear session on logout
+        res.redirect('/');
+    });
+});
+
+app.get('/github/callback', 
+  passport.authenticate('github', { failureRedirect: '/api-docs' }),
+  function(req, res) {
+    req.session.user = req.user; // Set session user for isAuthenticated middleware
+    res.redirect('/api-docs');
+  }
+);
+
+// 6.1 route to confirm who is logged in
+app.get("/me", (req, res) => {
+  if (!req.session.user) return res.status(401).json({ message: "Not logged in" });
+
+  res.status(200).json({
+    id: req.session.user.id,
+    username: req.session.user.username,
+    displayName: req.session.user.displayName,
+  });
+});
+
+// 7. Core Routes
 app.get("/", (req, res) => {
   res.send("Wellness Tracker API is running successfully!");
 });
 
-// Routes
 app.use("/", require("./src/routes/index"));
 
-// Swagger Documentation
+// 8. Swagger Documentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Export the app for testing
+// 9. Export the app for testing
 module.exports = app;
 
-// Start Server only if not in test environment
+// 10. Start Server (Only if not in test environment)
 if (process.env.NODE_ENV !== "test") {
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
