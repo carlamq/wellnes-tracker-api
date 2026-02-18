@@ -2,14 +2,12 @@ const express = require('express');
 const router = express.Router();
 
 // Authentication routes (for GitHub OAuth login)
-// router.use('/auth', require('./auth'));
+router.use('/auth', require('./auth'));  // ← was '../middleware/auth' (wrong!)
 
-// Existing routes (workouts and habits)
+// All 4 collection routes
 router.use('/workouts', require('./workouts'));
 router.use('/habits', require('./habits'));
-
-// New routes (nutrition and sleep) - completing the 4 collections requirement
-// router.use('/nutrition', require('./nutrition'));
-// router.use('/sleep', require('./sleep'));
+router.use('/nutrition', require('./nutrition'));  // ← uncommented
+router.use('/sleep', require('./sleep'));           // ← uncommented
 
 module.exports = router;

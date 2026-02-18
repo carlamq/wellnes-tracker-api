@@ -2,20 +2,15 @@ const express = require("express");
 const router = express.Router();
 const workoutsController = require("../controllers/workouts");
 const { validateWorkoutBody } = require("../middleware/validateWorkout");
+const { isAuthenticated } = require("../middleware/auth");
 
-// Route to get all workouts
+// Public routes
 router.get("/", workoutsController.getAllWorkouts);
-
-// Route to get a specific workout by ID
 router.get("/:id", workoutsController.getWorkoutById);
 
-// Route to create a new workout
-router.post("/", validateWorkoutBody, workoutsController.createWorkout);
-
-// Route to update an existing workout
-router.put("/:id", validateWorkoutBody, workoutsController.updateWorkout);
-
-// Route to delete a workout
-router.delete("/:id", workoutsController.deleteWorkout);
+// Protected routes
+router.post("/", isAuthenticated, validateWorkoutBody, workoutsController.createWorkout);
+router.put("/:id", isAuthenticated, validateWorkoutBody, workoutsController.updateWorkout);
+router.delete("/:id", isAuthenticated, workoutsController.deleteWorkout);
 
 module.exports = router;

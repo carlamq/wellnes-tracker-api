@@ -1,52 +1,45 @@
+const express = require('express');
+const router = express.Router();
+const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
-/**
- * Middleware to check if user is authenticated via JWT token
- * This protects routes that require authentication
- */
-const isAuthenticated = (req, res, next) => {
-  try {
-    // Get token from Authorization header
-    const authHeader = req.headers.authorization;
-    
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ 
-        error: 'Unauthorized',
-        message: 'No authentication token provided. Please login first.' 
-      });
-    }
-    
-    // Extract token (remove 'Bearer ' prefix)
-    const token = authHeader.substring(7);
-    
-    // Verify token using the secret session key
-    const decoded = jwt.verify(token, process.env.SECRET_SESSION);
-    
-    // Attach user info to request object
-    req.user = decoded;
-    
-    // Continue to next middleware/route handler
-    next();
-    
-  } catch (error) {
-    if (error.name === 'JsonWebTokenError') {
-      return res.status(401).json({ 
-        error: 'Unauthorized',
-        message: 'Invalid authentication token' 
-      });
-    }
-    if (error.name === 'TokenExpiredError') {
-      return res.status(401).json({ 
-        error: 'Unauthorized',
-        message: 'Authentication token has expired. Please login again.' 
-      });
-    }
-    
-    return res.status(500).json({ 
-      error: 'Internal Server Error',
-      message: 'Error verifying authentication token' 
-    });
-  }
-};
+router.get('/github', passport.authenticate('github', { scope: ['user:email'], session: false }));
 
-module.exports = { isAuthenticated };
+router.get('/github/callback',
+  passport.authenticate('github', { session: false, failureRedirect: '/auth/failure' }),
+  (req, res) => {
+    try {
+      const token = jwt.sign(
+        { id: req.user.id, username: req.user.username, email: req.user.email },
+        process.env.SECRET_SESSION,
+        { expiresIn: '24h' }
+      );
+      res.json({ success: true, token, user: req.user });
+    } catch (error) {
+      res.status(500).json({ message: 'Error generating token' });
+    }
+  }
+);
+
+router.get('/failure', (req, res) => {
+  res.status(401).json({ message: 'GitHub authentication failed' });
+});
+
+router.get('/verify', (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader?.startsWith('Bearer ')) {
+      return res.status(401).json({ valid: false, message: 'No token provided' });
+    }
+    const decoded = jwt.verify(authHeader.substring(7), process.env.SECRET_SESSION);
+    res.json({ valid: true, user: decoded });
+  } catch {
+    res.status(401).json({ valid: false, message: 'Invalid or expired token' });
+  }
+});
+
+router.post('/logout', (req, res) => {
+  res.json({ success: true, message: 'Logged out. Please delete your token.' });
+});
+
+module.exports = router;

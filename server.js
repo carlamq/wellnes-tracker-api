@@ -4,34 +4,43 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
-const passport = require("passport"); // NEW: Added for GitHub OAuth
+const passport = require("passport");
+const GitHubStrategy = require('passport-github2').Strategy; // ← add this
 
-// Load environment variables
-dotenv.config();
+dotenv.config(); // ← .env loads first
+
+// ← Configure passport AFTER dotenv, BEFORE routes
+passport.use(new GitHubStrategy({
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: process.env.GITHUB_CALLBACK_URL || "http://localhost:3000/auth/github/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    const user = {
+      id: profile.id,
+      username: profile.username,
+      email: profile.emails?.[0]?.value || null,
+      name: profile.displayName || profile.username,
+      avatar: profile.photos?.[0]?.value || null
+    };
+    return done(null, user);
+  }
+));
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware
 app.use(bodyParser.json());
-
-// NEW: Initialize Passport for GitHub OAuth
 app.use(passport.initialize());
 
-//CORS added
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Z-Key, Authorization"
-  );
+  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Z-Key, Authorization");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-
   if (req.method === "OPTIONS") return res.sendStatus(204);
   next();
 });
 
-// Database Connection - I UPDATED HERE FOR TESTING
 if (process.env.NODE_ENV !== "test") {
   mongoose
     .connect(process.env.MONGODB_URI)
@@ -39,21 +48,15 @@ if (process.env.NODE_ENV !== "test") {
     .catch((err) => console.error("Could not connect to MongoDB:", err));
 }
 
-// Home Route
 app.get("/", (req, res) => {
   res.send("Wellness Tracker API is running successfully!");
 });
 
-// Routes
 app.use("/", require("./src/routes/index"));
-
-// Swagger Documentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Export the app for testing
 module.exports = app;
 
-// Start Server only if not in test environment
 if (process.env.NODE_ENV !== "test") {
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
